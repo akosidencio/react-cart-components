@@ -1,6 +1,6 @@
 {
   "name": "react-cart-components",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A react shopping cart components",
   "author": "Dennis Paler",
   "license": "MIT",
@@ -57,5 +57,9 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "react-redux": "^7.0.2",
+    "redux": "^4.0.1"
+  }
 }

@@ -3,3 +3,9 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.container {
+  width: 960px;
+  max-width: 100%;
+  margin: 0 auto;
+}
