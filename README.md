@@ -15,6 +15,10 @@ This package provides several components:
 - **author**: Dennis Paler &lt;dtpaler@gmail.com>
 - **license**: MIT
 
+## Demo
+
+demo: [`https://react-cart-components-demo.herokuapp.com/`](https://react-cart-components-demo.herokuapp.com/)
+
 
 ## Install
 
