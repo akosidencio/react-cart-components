@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import styles from './styles.css'
+import './styles.css'
 
 import { connect } from 'react-redux'
-
 import { addProduct } from '../../actions';
+import { formatPrice } from '../../helpers';
 
-export default class AddCartButton extends Component {
+export class AddCartButton extends Component {
   static propTypes = {
-    product: PropTypes.object
+    product: PropTypes.object,
+    currency: PropTypes.string,
+    styles: PropTypes.object
   }
 
   addProductToCart = (event, product) => {
-     console.log(product)
+    product.quantity = 1;
+    this.props.addProduct(product)
   }
 
   render() {
@@ -28,4 +31,13 @@ export default class AddCartButton extends Component {
     )
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return { addProduct: (product) => dispatch(addProduct(product)) }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)( AddCartButton);
 

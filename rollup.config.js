@@ -3,10 +3,12 @@ import commonjs from 'rollup-plugin-commonjs'
 import external from 'rollup-plugin-peer-deps-external'
 import postcss from 'rollup-plugin-postcss'
 import resolve from 'rollup-plugin-node-resolve'
+import image from 'rollup-plugin-image';
 import url from 'rollup-plugin-url'
 import svgr from '@svgr/rollup'
 
 import pkg from './package.json'
+const cssUrl = require('postcss-url')
 
 export default {
   input: 'src/index.js',
@@ -24,8 +26,10 @@ export default {
   ],
   plugins: [
     external(),
+    image(),
     postcss({
-      modules: true
+      modules: false,
+      plugins: [cssUrl({url: 'inline'})]
     }),
     url(),
     svgr(),
