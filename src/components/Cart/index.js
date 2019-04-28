@@ -7,6 +7,7 @@ import CartProduct from "./CartProduct";
 import { connect } from "react-redux";
 import { loadCart, removeProduct, updateCart } from "../../actions";
 import { formatPrice } from "../../helpers";
+import localStorage from "../../localStorage";
 
 export class Cart extends Component {
   static propTypes = {
@@ -23,12 +24,22 @@ export class Cart extends Component {
   static defaultProps = {
     currencySymbol: "USD",
     checkoutLabel: "Checkout",
-    handleCheckout: () => { this.defaultHandleCheckout }
+    handleCheckout: () => {
+      this.defaultHandleCheckout;
+    }
   };
 
   state = {
     isOpen: false
   };
+
+  componentWillMount() {
+    this.props.loadCart(JSON.parse(localStorage().get()) || []);
+  }
+
+  componentDidMount() {
+    this.props.updateCart(this.props.cartProducts);
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.productToAdd !== this.props.productToAdd) {
@@ -86,7 +97,7 @@ export class Cart extends Component {
   };
 
   defaultHandleCheckout = () => {
-    console.log('clicking checkout button')
+    console.log("clicking checkout button");
     const { cartProducts, cartTotal } = this.props;
     const data = {
       cartProducts,
@@ -178,7 +189,8 @@ export class Cart extends Component {
 }
 
 const mapStateToProps = state => {
-  return {cartProducts: state.cart.products,
+  return {
+    cartProducts: state.cart.products,
     productToAdd: state.cart.productToAdd,
     productToRemove: state.cart.productToRemove,
     cartTotal: state.cart.data
