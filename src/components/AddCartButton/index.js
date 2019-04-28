@@ -8,7 +8,7 @@ import { formatPrice } from "../../helpers";
 
 export class AddCartButton extends Component {
   static propTypes = {
-    product: PropTypes.element.isRequired,
+    product: PropTypes.object.isRequired,
     styles: PropTypes.object,
     addLabel: PropTypes.string
   };

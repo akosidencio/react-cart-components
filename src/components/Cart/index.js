@@ -23,7 +23,7 @@ export class Cart extends Component {
   static defaultProps = {
     currencySymbol: "USD",
     checkoutLabel: "Checkout",
-    handleCheckout: this.defaultHandleCheckout
+    handleCheckout: () => { this.defaultHandleCheckout }
   };
 
   state = {
@@ -86,6 +86,7 @@ export class Cart extends Component {
   };
 
   defaultHandleCheckout = () => {
+    console.log('clicking checkout button')
     const { cartProducts, cartTotal } = this.props;
     const data = {
       cartProducts,
