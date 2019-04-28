@@ -1,4 +1,4 @@
-const localStorage = () => {
+const storage = () => {
     const key = 'cartProducts';
     return {
       persist: (data) => localStorage.setItem(key, data),
@@ -7,4 +7,4 @@ const localStorage = () => {
   
   }
 
-export default localStorage;
+export default storage;

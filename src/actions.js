@@ -5,7 +5,7 @@ import {
   REMOVE_PRODUCT
 } from "./actionTypes";
 
-import localStorage from './localStorage';
+import storage from './storage';
 
 export const loadCart = products => ({
   type: LOAD_CART,
@@ -39,7 +39,7 @@ export const updateCart = cartProducts => {
   };
 
   // we persist the cartProducts to localStorage
-  localStorage().persist(JSON.stringify(cartProducts));
+  storage().persist(JSON.stringify(cartProducts));
   
   return {
     type: UPDATE_CART,

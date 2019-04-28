@@ -7,7 +7,7 @@ import CartProduct from "./CartProduct";
 import { connect } from "react-redux";
 import { loadCart, removeProduct, updateCart } from "../../actions";
 import { formatPrice } from "../../helpers";
-import localStorage from "../../localStorage";
+import storage from "../../storage";
 
 export class Cart extends Component {
   static propTypes = {
@@ -24,9 +24,6 @@ export class Cart extends Component {
   static defaultProps = {
     currencySymbol: "USD",
     checkoutLabel: "Checkout",
-    handleCheckout: () => {
-      this.defaultHandleCheckout;
-    }
   };
 
   state = {
@@ -34,11 +31,13 @@ export class Cart extends Component {
   };
 
   componentWillMount() {
-    this.props.loadCart(JSON.parse(localStorage().get()) || []);
+    this.props.loadCart(JSON.parse(storage().get()) || []);
   }
 
   componentDidMount() {
-    this.props.updateCart(this.props.cartProducts);
+    setTimeout(() => {
+      this.props.updateCart(this.props.cartProducts);
+    }, 0);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -87,23 +86,13 @@ export class Cart extends Component {
     }
   };
 
-  handleCheckout = () => {
+  clickCheckout = () => {
     const { cartProducts, cartTotal, handleCheckout } = this.props;
     const data = {
-      cartProducts,
-      cartTotal
-    };
+      products: cartProducts,
+      total: cartTotal
+    }
     handleCheckout(data);
-  };
-
-  defaultHandleCheckout = () => {
-    console.log("clicking checkout button");
-    const { cartProducts, cartTotal } = this.props;
-    const data = {
-      cartProducts,
-      cartTotal
-    };
-    alert(JSON.stringify(data));
   };
 
   render() {
@@ -163,7 +152,7 @@ export class Cart extends Component {
 
           <div className="float-cart__shelf-container">
             {products}
-            {!products.length && (
+            {cartProducts === undefined || cartProducts.length == 0 && (
               <p className="shelf-empty">
                 Add some products in the cart <br />
                 :)
@@ -178,7 +167,7 @@ export class Cart extends Component {
                 {`${formatPrice(cartTotal.totalPrice, currencySymbol)}`}
               </p>
             </div>
-            <div onClick={() => this.handleCheckout} className="continue-btn">
+            <div onClick={this.clickCheckout} className="continue-btn">
               {checkoutLabel}
             </div>
           </div>
@@ -199,7 +188,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadCart: () => dispatch(loadCart()),
+    loadCart: (products) => dispatch(loadCart(products)),
     updateCart: products => dispatch(updateCart(products)),
     removeProduct: product => dispatch(removeProduct(product))
   };
