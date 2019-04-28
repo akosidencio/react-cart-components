@@ -1,6 +1,6 @@
 {
   "name": "react-cart-components-example",
-  "homepage": "https://Dennis Paler.github.io/react-cart-components",
+  "homepage": "https://akosidencio.github.io/react-cart-components",
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
@@ -9,7 +9,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.4.1",
     "react-scripts": "^1.1.4",
-    "react-cart-components": "file:.."
+    "react-cart": "file:.."
   },
   "scripts": {
     "start": "react-scripts start",

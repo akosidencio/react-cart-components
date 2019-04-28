@@ -69,7 +69,7 @@ export class Cart extends Component {
   removeProduct = product => {
     const { cartProducts, updateCart } = this.props;
 
-    const index = cartProducts.findIndex(p => p.id === product.id);
+    const index = cartProducts.findIndex(product => product.id === product.id);
     if (index >= 0) {
       cartProducts.splice(index, 1);
       updateCart(cartProducts);
@@ -177,12 +177,13 @@ export class Cart extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  cartProducts: state.cart.products,
-  productToAdd: state.cart.productToAdd,
-  productToRemove: state.cart.productToRemove,
-  cartTotal: state.cart.data
-});
+const mapStateToProps = state => {
+  return {cartProducts: state.cart.products,
+    productToAdd: state.cart.productToAdd,
+    productToRemove: state.cart.productToRemove,
+    cartTotal: state.cart.data
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
