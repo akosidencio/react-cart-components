@@ -1,6 +1,6 @@
 # react-cart-components
 
-> A react shopping cart components
+> A react shopping cart components with redux with instant updates for e-commerce applications
 
 [![NPM](https://img.shields.io/npm/v/react-cart-components.svg)](https://www.npmjs.com/package/react-cart-components) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -14,6 +14,11 @@ This package provides several components:
 
 - **author**: Dennis Paler &lt;dtpaler@gmail.com>
 - **license**: MIT
+
+#### Features
+
+- Add and remove product to the cart
+- Cart Products persist after page reloads
 
 ## Demo
 
@@ -112,7 +117,26 @@ class Example extends Component {
 }
 ```
 
-### Props
+
+## Props
+
+### Cart Component
+
+| Name         | Type    | Default | Description |
+| ------------ | ------- | ------- | ----------- |
+| currencySymbol | string | `USD` | Currency symbol to be used |
+| checkoutLabel | string | `Checkout` | A checkout button text on the cart |
+| handleCheckout | Function | null |  `handleCheckout` will be triggered when `checkoutLabel` button is clicked and return cart products object. |
+
+
+### AddCartButton
+
+| Name         | Type    | Default | Description |
+| ------------ | ------- | ------- | ----------- |
+| product | Object | null | (Required) Product object to be added to the cart |
+| styles | Array[Object] \| Object | `[{}]` | The style used for button |
+| addLabel | string | `Add to Cart` | A add cart button text |
+
 
 Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
