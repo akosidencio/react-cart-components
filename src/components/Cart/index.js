@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import './styles.css'
-import CartProduct from './CartProduct'
+import "./styles.css";
+import CartProduct from "./CartProduct";
 
-import { connect } from 'react-redux'
-import { loadCart, removeProduct, updateCart } from '../../actions'
-import { formatPrice } from '../../helpers';
+import { connect } from "react-redux";
+import { loadCart, removeProduct, updateCart } from "../../actions";
+import { formatPrice } from "../../helpers";
 
 export class Cart extends Component {
   static propTypes = {
@@ -16,8 +16,15 @@ export class Cart extends Component {
     productToAdd: PropTypes.object,
     removeProduct: PropTypes.func,
     productToRemove: PropTypes.object,
-    currency: PropTypes.string
-  }
+    currencySymbol: PropTypes.string,
+    handleCheckout: PropTypes.func
+  };
+
+  static defaultProps = {
+    currencySymbol: "USD",
+    checkoutLabel: "Checkout",
+    handleCheckout: this.defaultHandleCheckout
+  };
 
   state = {
     isOpen: false
@@ -44,16 +51,17 @@ export class Cart extends Component {
   addProduct = product => {
     const { cartProducts, updateCart } = this.props;
     let productAlreadyInCart = false;
-    cartProducts && cartProducts.forEach(cp => {
-      if (cp.id === product.id) {
-        cp.quantity += product.quantity;
-        productAlreadyInCart = true;
-      }
-    });
+    cartProducts &&
+      cartProducts.forEach(cp => {
+        if (cp.id === product.id) {
+          cp.quantity += product.quantity;
+          productAlreadyInCart = true;
+        }
+      });
     if (!productAlreadyInCart) {
       cartProducts.push(product);
     }
-    
+
     updateCart(cartProducts);
     this.openFloatCart();
   };
@@ -68,25 +76,54 @@ export class Cart extends Component {
     }
   };
 
+  handleCheckout = () => {
+    const { cartProducts, cartTotal, handleCheckout } = this.props;
+    const data = {
+      cartProducts,
+      cartTotal
+    };
+    handleCheckout(data);
+  };
+
+  defaultHandleCheckout = () => {
+    const { cartProducts, cartTotal } = this.props;
+    const data = {
+      cartProducts,
+      cartTotal
+    };
+    alert(JSON.stringify(data));
+  };
+
   render() {
+    const {
+      cartTotal,
+      cartProducts,
+      removeProduct,
+      currencySymbol,
+      checkoutLabel
+    } = this.props;
 
-    const { cartTotal, cartProducts, removeProduct, currency } = this.props;
+    const products =
+      cartProducts &&
+      cartProducts.map(product => {
+        return (
+          <CartProduct
+            product={product}
+            removeProduct={removeProduct}
+            currencySymbol={currencySymbol}
+            key={product.id}
+          />
+        );
+      });
 
-    const products = cartProducts && cartProducts.map(product => {
-      return (
-        <CartProduct product={product} removeProduct={removeProduct} currency={currency} key={product.id} />
-      );
-    });
-
-    let classes = ['float'];
+    let classes = ["float"];
 
     if (!!this.state.isOpen) {
-      classes.push('float-open');
+      classes.push("float-open");
     }
 
-
     return (
-      <div className={classes.join(' ')}>
+      <div className={classes.join(" ")}>
         {this.state.isOpen && (
           <div
             onClick={() => this.closeFloatCart()}
@@ -105,7 +142,7 @@ export class Cart extends Component {
         )}
 
         <div className="float-cart__content">
-        <div className="float-cart__header">
+          <div className="float-cart__header">
             <span className="bag">
               <span className="bag__quantity">{cartTotal.productQuantity}</span>
             </span>
@@ -126,17 +163,13 @@ export class Cart extends Component {
             <div className="sub">SUBTOTAL</div>
             <div className="sub-price">
               <p className="sub-price__val">
-                {`${formatPrice(
-                  cartTotal.totalPrice,
-                  currency
-                )}`}
+                {`${formatPrice(cartTotal.totalPrice, currencySymbol)}`}
               </p>
             </div>
-            <div onClick={() => console.log('checkout')} className="buy-btn">
-              Checkout
+            <div onClick={() => this.handleCheckout} className="continue-btn">
+              {checkoutLabel}
             </div>
           </div>
-
         </div>
       </div>
     );
@@ -151,12 +184,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => {
-  return { 
+  return {
     loadCart: () => dispatch(loadCart()),
-    updateCart: (products) => dispatch(updateCart(products)),
-    removeProduct: (product) => dispatch(removeProduct(product))
-  }
-}
+    updateCart: products => dispatch(updateCart(products)),
+    removeProduct: product => dispatch(removeProduct(product))
+  };
+};
 
 export default connect(
   mapStateToProps,
