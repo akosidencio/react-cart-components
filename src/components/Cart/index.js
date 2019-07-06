@@ -18,12 +18,19 @@ export class Cart extends Component {
     removeProduct: PropTypes.func,
     productToRemove: PropTypes.object,
     currencySymbol: PropTypes.string,
-    handleCheckout: PropTypes.func
+    handleCheckout: PropTypes.func,
+    checkoutTextLabel: PropTypes.string,
+    cartTextLabel: PropTypes.string,
+    subTotalTextLabel: PropTypes.string,
+    quantityTextLabel: PropTypes.string
   };
 
   static defaultProps = {
     currencySymbol: "USD",
-    checkoutLabel: "Checkout",
+    checkoutTextLabel: "Checkout",
+    cartTextLabel: "Your Cart",
+    subTotalTextLabel: "Sub Total",
+    quantityTextLabel: "Quantity"
   };
 
   state = {
@@ -91,7 +98,7 @@ export class Cart extends Component {
     const data = {
       products: cartProducts,
       total: cartTotal
-    }
+    };
     handleCheckout(data);
   };
 
@@ -101,7 +108,10 @@ export class Cart extends Component {
       cartProducts,
       removeProduct,
       currencySymbol,
-      checkoutLabel
+      checkoutTextLabel,
+      cartTextLabel,
+      subTotalTextLabel,
+      quantityTextLabel
     } = this.props;
 
     const products =
@@ -113,6 +123,7 @@ export class Cart extends Component {
             removeProduct={removeProduct}
             currencySymbol={currencySymbol}
             key={product.id}
+            quantityTextLabel={quantityTextLabel}
           />
         );
       });
@@ -147,28 +158,29 @@ export class Cart extends Component {
             <span className="bag">
               <span className="bag__quantity">{cartTotal.productQuantity}</span>
             </span>
-            <span className="header-title">Cart</span>
+            <span className="header-title">{cartTextLabel}</span>
           </div>
 
           <div className="float-cart__shelf-container">
             {products}
-            {cartProducts === undefined || cartProducts.length == 0 && (
-              <p className="shelf-empty">
-                Add some products in the cart <br />
-                :)
-              </p>
-            )}
+            {cartProducts === undefined ||
+              (cartProducts.length == 0 && (
+                <p className="shelf-empty">
+                  Add some products in the cart <br />
+                  :)
+                </p>
+              ))}
           </div>
 
           <div className="float-cart__footer">
-            <div className="sub">SUBTOTAL</div>
+            <div className="sub">{subTotalTextLabel}</div>
             <div className="sub-price">
               <p className="sub-price__val">
                 {`${formatPrice(cartTotal.totalPrice, currencySymbol)}`}
               </p>
             </div>
             <div onClick={this.clickCheckout} className="continue-btn">
-              {checkoutLabel}
+              {checkoutTextLabel}
             </div>
           </div>
         </div>
@@ -188,7 +200,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadCart: (products) => dispatch(loadCart(products)),
+    loadCart: products => dispatch(loadCart(products)),
     updateCart: products => dispatch(updateCart(products)),
     removeProduct: product => dispatch(removeProduct(product))
   };

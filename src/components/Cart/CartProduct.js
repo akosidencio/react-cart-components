@@ -8,7 +8,8 @@ class CartProduct extends Component {
   static propTypes = {
     product: PropTypes.object.isRequired,
     removeProduct: PropTypes.func.isRequired,
-    currencySymbol: PropTypes.string.isRequired
+    currencySymbol: PropTypes.string.isRequired,
+    quantityTextLabel: PropTypes.string.isRequired
   };
 
   state = {
@@ -24,7 +25,12 @@ class CartProduct extends Component {
   };
 
   render() {
-    const { product, removeProduct, currencySymbol } = this.props;
+    const {
+      product,
+      removeProduct,
+      currencySymbol,
+      quantityTextLabel
+    } = this.props;
     const classes = ["shelf-item"];
 
     if (!!this.state.isMouseOver) {
@@ -46,7 +52,9 @@ class CartProduct extends Component {
         />
         <div className="shelf-item__details">
           <p className="title">{product.name}</p>
-          <p className="desc">Quantity: {product.quantity}</p>
+          <p className="desc">
+            {quantityTextLabel}: {product.quantity}
+          </p>
         </div>
         <div className="shelf-item__price">
           <p>{formatPrice(product.price, currencySymbol)}</p>

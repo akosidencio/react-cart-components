@@ -125,7 +125,10 @@ class Example extends Component {
 | Name         | Type    | Default | Description |
 | ------------ | ------- | ------- | ----------- |
 | currencySymbol | string | `USD` | Currency symbol to be used |
-| checkoutLabel | string | `Checkout` | A checkout button text on the cart |
+| checkoutTextLabel | string | `Checkout` | A checkout button text on the cart |
+| cartTextLabel | string | `Your Cart` | A cart header title |
+| subTotalTextLabel | string | `Sub Total` |  Cart  - Sub Total Text |
+| quantityTextLabel | string | `Quantity` |  Cart  - Product Qty Text |
 | handleCheckout | Function | null |  `handleCheckout` will be triggered when `checkoutLabel` button is clicked and return cart products object. |
 
 
